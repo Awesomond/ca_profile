@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Claudia Arlita — MC · Moderator · Trainer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --cream: #F0EBE1;
+      --warm-white: #FAF7F2;
+      --gold: #B8892A;
+      --gold-light: #D4A94A;
+      --brown: #5C4A2A;
+      --brown-light: #8C7A5A;
+      --dark: #2A1F0F;
+      --text: #3D2F18;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--text);
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 4rem;
+      background: rgba(240,235,225,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(184,137,42,0.15);
+      transition: all .3s;
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem; font-weight: 600; letter-spacing: .12em;
+      color: var(--gold); text-transform: uppercase; text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.4rem; list-style: none; }
+    .nav-links a {
+      font-size: .78rem; font-weight: 400; letter-spacing: .18em;
+      text-transform: uppercase; text-decoration: none;
+      color: var(--brown); transition: color .25s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 7rem 4rem 4rem;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 80% at 70% 50%, rgba(184,137,42,.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-grain {
+      position: absolute; inset: 0; opacity: .04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .hero-text { position: relative; z-index: 2; }
+    .hero-badge {
+      display: inline-block;
+      font-size: .72rem; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--gold); border: 1px solid var(--gold);
+      padding: .4rem 1.1rem; margin-bottom: 2rem;
+      opacity: 0; animation: fadeUp .9s .2s forwards;
+    }
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(4rem, 8vw, 7.5rem);
+      font-weight: 300; line-height: .95;
+      color: var(--dark); letter-spacing: -.01em;
+      opacity: 0; animation: fadeUp .9s .4s forwards;
+    }
+    .hero-name span { color: var(--gold); font-style: italic; }
+    .hero-roles {
+      display: flex; gap: 1.5rem; margin-top: 2rem; flex-wrap: wrap;
+      opacity: 0; animation: fadeUp .9s .6s forwards;
+    }
+    .role-tag {
+      font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--brown-light); display: flex; align-items: center; gap: .5rem;
+    }
+    .role-tag::before {
+      content: ''; width: 18px; height: 1px; background: var(--gold);
+    }
+    .hero-desc {
+      margin-top: 2.5rem; max-width: 420px;
+      font-size: .95rem; line-height: 1.85; color: var(--brown-light);
+      opacity: 0; animation: fadeUp .9s .8s forwards;
+    }
+    .hero-cta {
+      margin-top: 3rem; display: flex; gap: 1.2rem; align-items: center;
+      opacity: 0; animation: fadeUp .9s 1s forwards;
+    }
+    .btn-primary {
+      background: var(--gold); color: var(--warm-white);
+      padding: .85rem 2.2rem; font-size: .78rem;
+      letter-spacing: .18em; text-transform: uppercase;
+      text-decoration: none; font-family: 'Jost', sans-serif;
+      font-weight: 400; transition: all .3s;
+      border: 1px solid var(--gold);
+    }
+    .btn-primary:hover { background: transparent; color: var(--gold); }
+    .btn-ghost {
+      color: var(--brown); font-size: .78rem;
+      letter-spacing: .18em; text-transform: uppercase;
+      text-decoration: none; transition: color .25s;
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .btn-ghost::after { content: '→'; font-size: 1rem; }
+    .btn-ghost:hover { color: var(--gold); }
+
+    .hero-image-wrap {
+      position: relative; z-index: 2;
+      display: flex; justify-content: flex-end;
+      opacity: 0; animation: fadeIn 1.2s .5s forwards;
+    }
+    .hero-img-frame {
+      position: relative; width: 480px; max-width: 100%;
+    }
+    .hero-img-frame::before {
+      content: ''; position: absolute;
+      top: -20px; right: -20px;
+      width: 100%; height: 100%;
+      border: 1px solid var(--gold); z-index: -1;
+    }
+    .hero-img-frame img {
+      width: 100%; display: block;
+      filter: sepia(.08) contrast(1.05);
+    }
+    .hero-years {
+      position: absolute; bottom: -1.5rem; left: -2rem;
+      background: var(--gold); color: var(--warm-white);
+      padding: 1.2rem 1.8rem; z-index: 5;
+    }
+    .hero-years .num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem; font-weight: 300; line-height: 1; display: block;
+    }
+    .hero-years .label {
+      font-size: .65rem; letter-spacing: .18em;
+      text-transform: uppercase; opacity: .85;
+    }
+
+    /* ── SECTION BASE ── */
+    section { padding: 7rem 4rem; }
+    .section-label {
+      font-size: .7rem; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1rem; display: flex; align-items: center; gap: .8rem;
+    }
+    .section-label::before { content: ''; width: 30px; height: 1px; background: var(--gold); }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      font-weight: 300; line-height: 1.1; color: var(--dark);
+    }
+    .section-title em { font-style: italic; color: var(--gold); }
+
+    /* ── ABOUT ── */
+    #about {
+      background: var(--warm-white);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+    }
+    .about-img-wrap { position: relative; }
+    .about-img-wrap img { width: 100%; display: block; filter: sepia(.06); }
+    .about-img-wrap::after {
+      content: ''; position: absolute;
+      bottom: -16px; left: 16px; right: -16px; top: 16px;
+      border: 1px solid rgba(184,137,42,.3); z-index: -1;
+    }
+    .about-text { }
+    .about-text p {
+      margin-top: 1.8rem; font-size: 1rem; line-height: 1.9; color: var(--brown-light);
+    }
+    .about-stats {
+      display: flex; gap: 3rem; margin-top: 3rem;
+      padding-top: 2rem; border-top: 1px solid rgba(184,137,42,.2);
+    }
+    .stat .num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem; font-weight: 300; color: var(--gold); line-height: 1;
+    }
+    .stat .lbl {
+      font-size: .68rem; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--brown-light); margin-top: .3rem;
+    }
+
+    /* ── SERVICES ── */
+    #services { background: var(--cream); }
+    .services-header { max-width: 600px; margin-bottom: 4rem; }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+    .service-card {
+      background: var(--warm-white); padding: 3rem 2.5rem;
+      border-top: 3px solid transparent;
+      transition: border-color .3s, transform .3s;
+      position: relative; overflow: hidden;
+    }
+    .service-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(184,137,42,.04) 0%, transparent 60%);
+      opacity: 0; transition: opacity .3s;
+    }
+    .service-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+    .service-card:hover::before { opacity: 1; }
+    .service-icon {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem; font-weight: 300; color: var(--gold);
+      opacity: .3; line-height: 1; margin-bottom: 1.5rem;
+    }
+    .service-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem; font-weight: 400; color: var(--dark);
+      margin-bottom: 1rem;
+    }
+    .service-items { list-style: none; }
+    .service-items li {
+      font-size: .85rem; color: var(--brown-light); padding: .4rem 0;
+      border-bottom: 1px solid rgba(184,137,42,.1);
+      display: flex; align-items: center; gap: .7rem;
+    }
+    .service-items li::before {
+      content: '–'; color: var(--gold); font-size: .8rem;
+    }
+    .service-fee {
+      margin-top: 1.8rem; padding-top: 1.5rem;
+      border-top: 1px solid rgba(184,137,42,.2);
+    }
+    .service-fee .price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem; font-weight: 300; color: var(--gold);
+    }
+    .service-fee .duration {
+      font-size: .7rem; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--brown-light); margin-top: .2rem;
+    }
+
+    /* ── EXPERIENCE ── */
+    #experience {
+      background: var(--dark); color: var(--cream);
+      position: relative; overflow: hidden;
+    }
+    #experience::before {
+      content: 'EXP'; position: absolute;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20rem; font-weight: 600; color: rgba(255,255,255,.02);
+      top: -2rem; right: -2rem; line-height: 1; pointer-events: none;
+    }
+    #experience .section-title { color: var(--cream); }
+    .exp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-top: 4rem; }
+    .exp-item {
+      padding: 2.5rem; border: 1px solid rgba(184,137,42,.2);
+      position: relative; transition: border-color .3s;
+    }
+    .exp-item:hover { border-color: var(--gold); }
+    .exp-item::before {
+      content: attr(data-num);
+      position: absolute; top: -1.2rem; left: 2rem;
+      background: var(--dark); padding: 0 .8rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem; font-weight: 300; color: var(--gold);
+      letter-spacing: .1em;
+    }
+    .exp-company {
+      font-size: .68rem; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: .8rem;
+    }
+    .exp-role {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 300; color: var(--cream);
+      margin-bottom: .6rem;
+    }
+    .exp-duration {
+      font-size: .78rem; color: rgba(240,235,225,.4); letter-spacing: .12em;
+    }
+
+    /* ── CLIENTS ── */
+    #clients { background: var(--warm-white); }
+    .clients-header { margin-bottom: 3.5rem; }
+    .clients-desc {
+      margin-top: 1rem; font-size: .92rem;
+      color: var(--brown-light); line-height: 1.8; max-width: 500px;
+    }
+    .client-logos {
+      display: flex; flex-wrap: wrap; gap: 0;
+    }
+    .client-logo {
+      width: calc(100% / 5);
+      padding: 2rem 1.5rem;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid rgba(184,137,42,.1);
+      font-family: 'Jost', sans-serif; font-size: .75rem;
+      font-weight: 500; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--brown-light); text-align: center;
+      transition: background .25s, color .25s;
+      cursor: default;
+    }
+    .client-logo:hover { background: var(--gold); color: var(--warm-white); }
+    .clients-note {
+      margin-top: 2rem; font-size: .78rem;
+      color: var(--brown-light); letter-spacing: .12em;
+      text-transform: uppercase; text-align: center;
+      font-style: italic;
+    }
+
+    /* ── RATE CARD ── */
+    #rates { background: var(--cream); }
+    .rates-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 4rem; }
+    .rate-card {
+      border: 1px solid rgba(184,137,42,.25); padding: 2.5rem;
+      position: relative; transition: all .3s;
+      background: var(--warm-white);
+    }
+    .rate-card.featured {
+      background: var(--gold); color: var(--warm-white);
+      border-color: var(--gold);
+    }
+    .rate-card:hover:not(.featured) { border-color: var(--gold); }
+    .rate-type {
+      font-size: .68rem; letter-spacing: .22em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1rem;
+    }
+    .rate-card.featured .rate-type { color: rgba(255,255,255,.7); }
+    .rate-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem; font-weight: 300; margin-bottom: 1.5rem;
+    }
+    .rate-card.featured .rate-name { color: var(--warm-white); }
+    .rate-items { list-style: none; }
+    .rate-items li {
+      padding: .5rem 0;
+      border-bottom: 1px solid rgba(184,137,42,.15);
+      font-size: .85rem; display: flex; justify-content: space-between;
+    }
+    .rate-card.featured .rate-items li { border-color: rgba(255,255,255,.15); color: rgba(255,255,255,.85); }
+    .rate-items .price-val {
+      font-weight: 500; color: var(--gold);
+      font-family: 'Cormorant Garamond', serif; font-size: 1rem;
+    }
+    .rate-card.featured .price-val { color: var(--warm-white); font-weight: 600; }
+    .rate-note {
+      margin-top: 2rem; font-size: .72rem;
+      color: var(--brown-light); line-height: 1.7; font-style: italic;
+    }
+    .rate-card.featured .rate-note { color: rgba(255,255,255,.6); }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--dark); color: var(--cream);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+    }
+    #contact .section-title { color: var(--cream); }
+    .contact-text p {
+      margin-top: 1.5rem; font-size: .95rem; line-height: 1.9;
+      color: rgba(240,235,225,.6);
+    }
+    .contact-links { margin-top: 3rem; display: flex; flex-direction: column; gap: 1.2rem; }
+    .contact-link {
+      display: flex; align-items: center; gap: 1.2rem;
+      text-decoration: none; color: var(--cream);
+      font-size: .88rem; letter-spacing: .05em;
+      padding-bottom: 1.2rem; border-bottom: 1px solid rgba(184,137,42,.15);
+      transition: color .25s;
+    }
+    .contact-link:hover { color: var(--gold-light); }
+    .contact-link-icon {
+      width: 36px; height: 36px; border: 1px solid rgba(184,137,42,.4);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .7rem; color: var(--gold); flex-shrink: 0;
+      transition: background .25s;
+    }
+    .contact-link:hover .contact-link-icon { background: var(--gold); color: var(--warm-white); border-color: var(--gold); }
+    .contact-form-side {
+      background: rgba(255,255,255,.04); padding: 3rem;
+      border: 1px solid rgba(184,137,42,.15);
+    }
+    .form-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 300; margin-bottom: 2rem;
+      color: var(--cream);
+    }
+    .form-group { margin-bottom: 1.4rem; }
+    .form-group label {
+      display: block; font-size: .68rem; letter-spacing: .18em;
+      text-transform: uppercase; color: rgba(240,235,225,.5);
+      margin-bottom: .5rem;
+    }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%; background: rgba(255,255,255,.05);
+      border: 1px solid rgba(184,137,42,.2); color: var(--cream);
+      padding: .85rem 1rem; font-family: 'Jost', sans-serif;
+      font-size: .88rem; font-weight: 300;
+      transition: border-color .25s; outline: none;
+      appearance: none;
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+      border-color: var(--gold);
+    }
+    .form-group textarea { height: 100px; resize: none; }
+    .form-group select option { background: #2A1F0F; }
+    .btn-submit {
+      width: 100%; background: var(--gold); color: var(--warm-white);
+      border: none; padding: 1rem;
+      font-family: 'Jost', sans-serif; font-size: .78rem;
+      letter-spacing: .2em; text-transform: uppercase; cursor: pointer;
+      transition: opacity .25s; font-weight: 400;
+    }
+    .btn-submit:hover { opacity: .88; }
+    .form-success {
+      display: none; text-align: center; padding: 2rem;
+      font-size: .9rem; color: var(--gold-light);
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 1.2rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #1A1208; text-align: center;
+      padding: 2rem; font-size: .7rem;
+      letter-spacing: .18em; text-transform: uppercase;
+      color: rgba(240,235,225,.25);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* scroll reveal */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s, transform .7s; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── MOBILE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 1.8rem; }
+      .nav-links { display: none; }
+      #hero { grid-template-columns: 1fr; padding: 7rem 1.8rem 4rem; text-align: center; }
+      .hero-image-wrap { justify-content: center; margin-top: 3rem; }
+      .hero-img-frame { width: 320px; }
+      .hero-roles { justify-content: center; }
+      .hero-cta { justify-content: center; }
+      section { padding: 5rem 1.8rem; }
+      #about, #contact { grid-template-columns: 1fr; gap: 3rem; }
+      .services-grid, .rates-grid, .exp-grid { grid-template-columns: 1fr; }
+      .about-stats { gap: 1.8rem; }
+      .client-logo { width: calc(100% / 3); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#hero">Claudia Arlita</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#clients">Clients</a></li>
+    <li><a href="#rates">Rates</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-text">
+    <div class="hero-badge">Portfolio 2025</div>
+    <h1 class="hero-name">
+      Claudia<br><span>Arlita</span>
+    </h1>
+    <div class="hero-roles">
+      <span class="role-tag">Master of Ceremony</span>
+      <span class="role-tag">Moderator</span>
+      <span class="role-tag">Trainer</span>
+    </div>
+    <p class="hero-desc">
+      Professional trainer and host with over 8 years of experience building genuine audience connections across seminars, corporate events, and live productions.
+    </p>
+    <div class="hero-cta">
+      <a class="btn-primary" href="#contact">Book a Session</a>
+      <a class="btn-ghost" href="#services">View Services</a>
+    </div>
+  </div>
+  <div class="hero-image-wrap">
+    <div class="hero-img-frame">
+      <!-- Placeholder — replace src with actual photo -->
+      <img src="https://images.unsplash.com/photo-1598257006458-087169a1f08d?w=700&auto=format&fit=crop&q=80" alt="Claudia Arlita on stage" />
+      <div class="hero-years">
+        <span class="num">8+</span>
+        <span class="label">Years of Experience</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-img-wrap reveal">
+    <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=700&auto=format&fit=crop&q=80" alt="Claudia speaking at a large event" />
+  </div>
+  <div class="about-text reveal">
+    <div class="section-label">About Me</div>
+    <h2 class="section-title">Energy, Precision &amp; <em>Stage Presence</em></h2>
+    <p>
+      I am a professional Trainer and Master of Ceremony known for building strong audience connections while maintaining a well-structured, dynamic flow across every event.
+    </p>
+    <p>
+      With experience leading seminars, training programs, and hosting a wide range of live events across industries — from corporate conferences to product launches and celebrations — I bring energy and refinement that ensures every session is both meaningful and memorable.
+    </p>
+    <div class="about-stats">
+      <div class="stat">
+        <div class="num">8+</div>
+        <div class="lbl">Years Training</div>
+      </div>
+      <div class="stat">
+        <div class="num">3+</div>
+        <div class="lbl">Years as MC</div>
+      </div>
+      <div class="stat">
+        <div class="num">15+</div>
+        <div class="lbl">Major Clients</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-header reveal">
+    <div class="section-label">What I Offer</div>
+    <h2 class="section-title">Professional <em>Services</em></h2>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-icon">01</div>
+      <div class="service-name">Master of Ceremony</div>
+      <ul class="service-items">
+        <li>Formal &amp; non-formal events</li>
+        <li>Product launches</li>
+        <li>Weddings</li>
+        <li>Birthday celebrations</li>
+      </ul>
+      <div class="service-fee">
+        <div class="price">Rp 2.500.000</div>
+        <div class="duration">Half day · 4 hours · Jakarta &amp; Tangerang</div>
+      </div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">02</div>
+      <div class="service-name">Moderator</div>
+      <ul class="service-items">
+        <li>Facilitating discussions</li>
+        <li>Talk shows</li>
+        <li>Panel sessions</li>
+      </ul>
+      <div class="service-fee">
+        <div class="price">Rp 2.500.000</div>
+        <div class="duration">Half day · 4 hours · Jakarta &amp; Tangerang</div>
+      </div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">03</div>
+      <div class="service-name">Public Speaking Trainer</div>
+      <ul class="service-items">
+        <li>Group session (up to 15)</li>
+        <li>Private coaching</li>
+        <li>Company / school programs</li>
+      </ul>
+      <div class="service-fee">
+        <div class="price">Rp 5.000.000</div>
+        <div class="duration">Group · 4 hours · Up to 15 participants</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="reveal">
+    <div class="section-label">Career</div>
+    <h2 class="section-title">Experience &amp; <em>Background</em></h2>
+  </div>
+  <div class="exp-grid">
+    <div class="exp-item reveal" data-num="01">
+      <div class="exp-company">PT Merry Riana Edukasi Tbk</div>
+      <div class="exp-role">Public Speaking Trainer</div>
+      <div class="exp-duration">8 Years</div>
+    </div>
+    <div class="exp-item reveal" data-num="02">
+      <div class="exp-company">PT Merry Riana Edukasi Tbk</div>
+      <div class="exp-role">Life &amp; Character Trainer</div>
+      <div class="exp-duration">4 Years</div>
+    </div>
+    <div class="exp-item reveal" data-num="03">
+      <div class="exp-company">Various Events &amp; Organizations</div>
+      <div class="exp-role">Master of Ceremony</div>
+      <div class="exp-duration">3 Years</div>
+    </div>
+    <div class="exp-item reveal" data-num="04">
+      <div class="exp-company">Inspirafest Creator Economy &amp; Others</div>
+      <div class="exp-role">Moderator &amp; Panel Facilitator</div>
+      <div class="exp-duration">Ongoing</div>
+    </div>
+  </div>
+</section>
+
+<!-- CLIENTS -->
+<section id="clients">
+  <div class="clients-header reveal">
+    <div class="section-label">Previous Clients</div>
+    <h2 class="section-title">Trusted by <em>Leading</em> Organizations</h2>
+    <p class="clients-desc">Government agencies, large corporations, schools, and religious institutions — across industries and scales.</p>
+  </div>
+  <div class="client-logos reveal">
+    <div class="client-logo">Mahkamah Konstitusi</div>
+    <div class="client-logo">OJK</div>
+    <div class="client-logo">PNM</div>
+    <div class="client-logo">Kalbe</div>
+    <div class="client-logo">Syngenta</div>
+    <div class="client-logo">Fresenius Kabi</div>
+    <div class="client-logo">Hikaron</div>
+    <div class="client-logo">PT CNG Hilir Raya</div>
+    <div class="client-logo">Kite</div>
+    <div class="client-logo">H&amp;M</div>
+    <div class="client-logo">Fame Property</div>
+    <div class="client-logo">Inspirafest Creator Economy</div>
+    <div class="client-logo">Nafiri</div>
+    <div class="client-logo">Kolese Gonzaga</div>
+    <div class="client-logo">Darmayudha</div>
+  </div>
+  <p class="clients-note reveal">and many more…</p>
+</section>
+
+<!-- RATES -->
+<section id="rates">
+  <div class="reveal">
+    <div class="section-label">Pricing</div>
+    <h2 class="section-title">Rate <em>Card</em></h2>
+  </div>
+  <div class="rates-grid">
+    <div class="rate-card reveal">
+      <div class="rate-type">MC / Moderator</div>
+      <div class="rate-name">Half Day</div>
+      <ul class="rate-items">
+        <li><span>Duration</span><span class="price-val">4 Hours</span></li>
+        <li><span>Coverage</span><span class="price-val">Jkt &amp; Tangerang</span></li>
+        <li><span>Rate</span><span class="price-val">Rp 2.5 Jt</span></li>
+      </ul>
+    </div>
+    <div class="rate-card featured reveal">
+      <div class="rate-type">MC / Moderator</div>
+      <div class="rate-name">Full Day</div>
+      <ul class="rate-items">
+        <li><span>Duration</span><span class="price-val">8 Hours</span></li>
+        <li><span>Coverage</span><span class="price-val">Jkt &amp; Tangerang</span></li>
+        <li><span>Rate</span><span class="price-val">Rp 4.5 Jt</span></li>
+      </ul>
+      <div class="rate-note">MC + Moderator combo: Rp 4 Jt (half day) · Rp 8 Jt (full day)</div>
+    </div>
+    <div class="rate-card reveal">
+      <div class="rate-type">Public Speaking Trainer</div>
+      <div class="rate-name">Group &amp; Private</div>
+      <ul class="rate-items">
+        <li><span>Group (≤15)</span><span class="price-val">Rp 5 Jt</span></li>
+        <li><span>Private (3h)</span><span class="price-val">Rp 1.5 Jt</span></li>
+        <li><span>+ Handout &amp; Zoom mentoring</span><span class="price-val">✓</span></li>
+      </ul>
+      <div class="rate-note">Includes 2-hour Zoom mentoring session, valid 7 days after class</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-text reveal">
+    <div class="section-label">Get in Touch</div>
+    <h2 class="section-title">Let's <em>Collaborate</em></h2>
+    <p>Each service can be discussed and tailored to your specific needs. Delivered in Bahasa Indonesia.</p>
+    <div class="contact-links">
+      <a class="contact-link" href="https://wa.me/6285398287410" target="_blank">
+        <div class="contact-link-icon">WA</div>
+        0853 9828 7410
+      </a>
+      <a class="contact-link" href="mailto:claudia26arlita@gmail.com">
+        <div class="contact-link-icon">@</div>
+        claudia26arlita@gmail.com
+      </a>
+      <a class="contact-link" href="https://instagram.com/claudiaarlita" target="_blank">
+        <div class="contact-link-icon">IG</div>
+        @claudiaarlita
+      </a>
+    </div>
+  </div>
+  <div class="contact-form-side reveal">
+    <div class="form-title">Send a Booking Inquiry</div>
+    <div id="contactForm">
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" id="fname" placeholder="e.g. Budi Santoso" />
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="femail" placeholder="you@email.com" />
+      </div>
+      <div class="form-group">
+        <label>Service Needed</label>
+        <select id="fservice">
+          <option value="">Select a service…</option>
+          <option>Master of Ceremony</option>
+          <option>Moderator</option>
+          <option>MC + Moderator</option>
+          <option>Public Speaking Trainer (Group)</option>
+          <option>Public Speaking Trainer (Private)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Message / Event Details</label>
+        <textarea id="fmsg" placeholder="Date, location, duration, additional notes…"></textarea>
+      </div>
+      <button class="btn-submit" onclick="submitForm()">Send Inquiry →</button>
+    </div>
+    <div class="form-success" id="formSuccess">
+      Thank you! Your inquiry has been sent. Claudia will be in touch shortly.
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  © 2025 Claudia Arlita · @claudiaarlita · All Rights Reserved
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => obs.observe(r));
+
+  // Staggered children
+  document.querySelectorAll('.services-grid, .exp-grid, .rates-grid').forEach(grid => {
+    [...grid.children].forEach((child, i) => {
+      child.style.transitionDelay = `${i * 0.12}s`;
+    });
+  });
+
+  // Form submit (opens WhatsApp)
+  function submitForm() {
+    const name = document.getElementById('fname').value.trim();
+    const email = document.getElementById('femail').value.trim();
+    const service = document.getElementById('fservice').value;
+    const msg = document.getElementById('fmsg').value.trim();
+    if (!name || !service) { alert('Please fill in your name and select a service.'); return; }
+    const text = encodeURIComponent(
+      `Halo Claudia! Saya ${name} ingin menanyakan layanan: *${service}*.\n\nEmail: ${email}\n\n${msg}`
+    );
+    window.open(`https://wa.me/6285398287410?text=${text}`, '_blank');
+    document.getElementById('contactForm').style.display = 'none';
+    document.getElementById('formSuccess').style.display = 'block';
+  }
+</script>
+</body>
+</html>
